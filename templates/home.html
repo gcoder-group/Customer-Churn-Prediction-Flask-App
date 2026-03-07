@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Customer Churn Prediction</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        width: 650px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 7px;
+        margin-top: 4px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background: #667eea;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #5563d1;
+      }
+
+      .result {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Customer Churn Prediction</h1>
+
+      <form id="predictionForm">
+        <p style="text-align: center; font-size: 14px">
+          Dataset source:
+          <a
+            href="https://www.kaggle.com/datasets/blastchar/telco-customer-churn"
+            target="_blank"
+          >
+            Telco Customer Churn Dataset
+          </a>
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Tenure</label>
+            <input type="number" name="tenure" required />
+          </div>
+
+          <div class="form-group">
+            <label>Monthly Charges</label>
+            <input type="number" step="0.01" name="MonthlyCharges" required />
+          </div>
+
+          <div class="form-group">
+            <label>Total Charges</label>
+            <input type="number" step="0.01" name="TotalCharges" required />
+          </div>
+
+          <div class="form-group">
+            <label>Gender</label>
+            <select name="gender">
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Senior Citizen</label>
+            <select name="SeniorCitizen">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Partner</label>
+            <select name="Partner">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Dependents</label>
+            <select name="Dependents">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Phone Service</label>
+            <select name="PhoneService">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Multiple Lines</label>
+            <select name="MultipleLines">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No phone service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Internet Service</label>
+            <select name="InternetService">
+              <option>DSL</option>
+              <option>Fiber optic</option>
+              <option>No</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Online Security</label>
+            <select name="OnlineSecurity">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No internet service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Online Backup</label>
+            <select name="OnlineBackup">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No internet service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Device Protection</label>
+            <select name="DeviceProtection">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No internet service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Tech Support</label>
+            <select name="TechSupport">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No internet service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Streaming TV</label>
+            <select name="StreamingTV">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No internet service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Streaming Movies</label>
+            <select name="StreamingMovies">
+              <option>No</option>
+              <option>Yes</option>
+              <option>No internet service</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Contract</label>
+            <select name="Contract">
+              <option>Month-to-month</option>
+              <option>One year</option>
+              <option>Two year</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Paperless Billing</label>
+            <select name="PaperlessBilling">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Payment Method</label>
+            <select name="PaymentMethod">
+              <option>Electronic check</option>
+              <option>Mailed check</option>
+              <option>Bank transfer (automatic)</option>
+              <option>Credit card (automatic)</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit">Predict Churn</button>
+        <button
+          type="button"
+          onclick="fillSampleData()"
+          style="background: #28a745"
+        >
+          Fill Sample Data
+        </button>
+      </form>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("predictionForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const data = Object.fromEntries(formData.entries());
+
+          const response = await fetch("/predict_api", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          document.getElementById("result").innerHTML =
+            "Prediction: " + result["Churn Prediction"];
+        });
+
+      function fillSampleData() {
+        document.querySelector('[name="tenure"]').value = 1;
+        document.querySelector('[name="MonthlyCharges"]').value = 19.3;
+        document.querySelector('[name="TotalCharges"]').value = 19.3;
+        document.querySelector('[name="gender"]').value = "Male";
+        document.querySelector('[name="SeniorCitizen"]').value = "0";
+        document.querySelector('[name="Partner"]').value = "No";
+        document.querySelector('[name="Dependents"]').value = "No";
+        document.querySelector('[name="PhoneService"]').value = "Yes";
+        document.querySelector('[name="MultipleLines"]').value = "No";
+        document.querySelector('[name="InternetService"]').value = "No";
+        document.querySelector('[name="OnlineSecurity"]').value =
+          "No internet service";
+        document.querySelector('[name="OnlineBackup"]').value =
+          "No internet service";
+        document.querySelector('[name="DeviceProtection"]').value =
+          "No internet service";
+        document.querySelector('[name="TechSupport"]').value =
+          "No internet service";
+        document.querySelector('[name="StreamingTV"]').value =
+          "No internet service";
+        document.querySelector('[name="StreamingMovies"]').value =
+          "No internet service";
+        document.querySelector('[name="Contract"]').value = "Month-to-month";
+        document.querySelector('[name="PaperlessBilling"]').value = "No";
+        document.querySelector('[name="PaymentMethod"]').value =
+          "Credit card (automatic)";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+conda create -p .venv python==3.12 -y
+conda activate .venv/
+
+
+pip install pandas
+pip install numpy
+pip install seaborn 
+pip install scikit-learn
+
+conda install ipykernel --update-deps --force-reinstall -y
+
+pip freeze > requirements.txt
