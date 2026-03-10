@@ -1,0 +1,316 @@
+{% extends "layout.html" %} {% block title %}Model Metrics - Churn Predictor{%
+endblock %} {% block page_title %}Model Performance Metrics{% endblock %} {%
+block content %}
+<section class="project-info mb-4">
+  <p>
+    This page shows the performance metrics of the
+    <strong>Customer Churn Prediction</strong> model. These metrics are
+    calculated on the entire dataset to evaluate how well the model can predict
+    customer churn.
+  </p>
+</section>
+
+<hr />
+
+<!-- Metrics Cards -->
+<div class="row text-center mb-4">
+  <div class="col-6 col-md-3 mb-3">
+    <div class="card metric-card h-100">
+      <div class="card-body">
+        <h5 class="card-title text-muted">Accuracy</h5>
+        <h2 class="metric-value" id="accuracy">--</h2>
+        <p class="card-text text-muted">Overall correctness</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3 mb-3">
+    <div class="card metric-card h-100">
+      <div class="card-body">
+        <h5 class="card-title text-muted">Precision</h5>
+        <h2 class="metric-value" id="precision">--</h2>
+        <p class="card-text text-muted">Positive prediction accuracy</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3 mb-3">
+    <div class="card metric-card h-100">
+      <div class="card-body">
+        <h5 class="card-title text-muted">Recall</h5>
+        <h2 class="metric-value" id="recall">--</h2>
+        <p class="card-text text-muted">Churn detection rate</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3 mb-3">
+    <div class="card metric-card h-100">
+      <div class="card-body">
+        <h5 class="card-title text-muted">F1 Score</h5>
+        <h2 class="metric-value" id="f1">--</h2>
+        <p class="card-text text-muted">Harmonic mean</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Metrics Explanations -->
+<div class="accordion mb-4" id="metricsAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#accuracyInfo"
+      >
+        What is Accuracy?
+      </button>
+    </h2>
+    <div
+      id="accuracyInfo"
+      class="accordion-collapse collapse"
+      data-bs-parent="#metricsAccordion"
+    >
+      <div class="accordion-body">
+        <p>
+          <strong>Accuracy</strong> measures the overall correctness of the
+          model.
+        </p>
+        <p class="mb-0"><em>Formula: (TP + TN) / Total Predictions</em></p>
+        <p class="mb-0 text-muted">
+          In simpler terms: Out of all predictions, how many were correct?
+        </p>
+        <p class="mb-0 mt-2">
+          <strong>Example:</strong> If accuracy is 75%, it means the model
+          correctly predicts churn 75 out of 100 times.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#precisionInfo"
+      >
+        What is Precision?
+      </button>
+    </h2>
+    <div
+      id="precisionInfo"
+      class="accordion-collapse collapse"
+      data-bs-parent="#metricsAccordion"
+    >
+      <div class="accordion-body">
+        <p>
+          <strong>Precision</strong> measures how many of the predicted churners
+          actually churned.
+        </p>
+        <p class="mb-0"><em>Formula: TP / (TP + FP)</em></p>
+        <p class="mb-0 text-muted">
+          This tells us: When the model says a customer will churn, how often is
+          it correct?
+        </p>
+        <p class="mb-0 mt-2">
+          <strong>Example:</strong> If precision is 60%, when the model predicts
+          a customer will churn, it's correct 60% of the time.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#recallInfo"
+      >
+        What is Recall?
+      </button>
+    </h2>
+    <div
+      id="recallInfo"
+      class="accordion-collapse collapse"
+      data-bs-parent="#metricsAccordion"
+    >
+      <div class="accordion-body">
+        <p>
+          <strong>Recall</strong> (also called Sensitivity) measures how many
+          actual churners the model correctly identifies.
+        </p>
+        <p class="mb-0"><em>Formula: TP / (TP + FN)</em></p>
+        <p class="mb-0 text-muted">
+          This tells us: Out of all customers who actually churned, how many did
+          we catch?
+        </p>
+        <p class="mb-0 mt-2">
+          <strong>Example:</strong> If recall is 80%, the model catches 80% of
+          all customers who will churn.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#f1Info"
+      >
+        What is F1 Score?
+      </button>
+    </h2>
+    <div
+      id="f1Info"
+      class="accordion-collapse collapse"
+      data-bs-parent="#metricsAccordion"
+    >
+      <div class="accordion-body">
+        <p>
+          <strong>F1 Score</strong> is the harmonic mean of Precision and
+          Recall. It balances both metrics.
+        </p>
+        <p class="mb-0">
+          <em>Formula: 2 × (Precision × Recall) / (Precision + Recall)</em>
+        </p>
+        <p class="mb-0 text-muted">
+          Useful when you need a balance between catching churners (recall) and
+          not wasting resources on false predictions (precision).
+        </p>
+        <p class="mb-0 mt-2">
+          <strong>Example:</strong> A high F1 score means the model has both
+          good precision and good recall.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- Confusion Matrix -->
+<h5 class="mb-3">Confusion Matrix</h5>
+<p class="text-muted mb-3">
+  The confusion matrix shows how the model classifies customers.
+  <strong>Predicted values</strong> are shown horizontally and
+  <strong>Actual values</strong> are shown vertically.
+</p>
+
+<div class="table-responsive" style="max-width: 500px; margin: 0 auto">
+  <table class="table table-bordered text-center" id="confusionMatrix">
+    <thead class="table-dark">
+      <tr>
+        <th>Actual \ Predicted</th>
+        <th>No Churn</th>
+        <th>Churn</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="table-dark">No Churn</th>
+        <td id="tn">--</td>
+        <td id="fp">--</td>
+      </tr>
+      <tr>
+        <th class="table-dark">Churn</th>
+        <td id="fn">--</td>
+        <td id="tp">--</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="row mt-4 text-muted" style="font-size: 0.9rem">
+  <div class="col-md-6">
+    <p><strong>TN (True Negative):</strong> Correctly predicted "No Churn"</p>
+    <p><strong>FP (False Positive):</strong> Incorrectly predicted "Churn"</p>
+  </div>
+  <div class="col-md-6">
+    <p><strong>FN (False Negative):</strong> Missed "Churn" predictions</p>
+    <p><strong>TP (True Positive):</strong> Correctly predicted "Churn"</p>
+  </div>
+</div>
+
+<hr />
+
+<!-- Model Info -->
+<h5 class="mb-3">Model Information</h5>
+<div class="card">
+  <div class="card-body">
+    <p><strong>Algorithm:</strong> Logistic Regression</p>
+    <p><strong>Dataset:</strong> Telco Customer Churn</p>
+    <p><strong>Total Samples:</strong> <span id="totalSamples">--</span></p>
+    <p>
+      <strong>Features Used:</strong> 19 (customer demographics, services,
+      billing)
+    </p>
+  </div>
+</div>
+{% endblock %} {% block extra_css %}
+<style>
+  .metric-card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .metric-value {
+    color: #667eea;
+    font-weight: bold;
+    font-size: 2.5rem;
+  }
+
+  .table th {
+    vertical-align: middle;
+  }
+
+  .table td {
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+</style>
+{% endblock %} {% block extra_js %}
+<script>
+  async function loadMetrics() {
+    try {
+      const response = await fetch("/model_metrics_api");
+      const data = await response.json();
+
+      // Update metrics with percentage
+      document.getElementById("accuracy").textContent =
+        (data.accuracy * 100).toFixed(1) + "%";
+      document.getElementById("precision").textContent =
+        (data.precision * 100).toFixed(1) + "%";
+      document.getElementById("recall").textContent =
+        (data.recall * 100).toFixed(1) + "%";
+      document.getElementById("f1").textContent =
+        (data.f1_score * 100).toFixed(1) + "%";
+
+      // Update confusion matrix
+      const cm = data.confusion_matrix;
+      document.getElementById("tn").textContent = cm[0][0];
+      document.getElementById("fp").textContent = cm[0][1];
+      document.getElementById("fn").textContent = cm[1][0];
+      document.getElementById("tp").textContent = cm[1][1];
+
+      // Calculate total samples
+      const total = cm[0][0] + cm[0][1] + cm[1][0] + cm[1][1];
+      document.getElementById("totalSamples").textContent =
+        total.toLocaleString();
+    } catch (error) {
+      console.error("Error loading metrics:", error);
+    }
+  }
+
+  // Load metrics on page load
+  loadMetrics();
+</script>
+{% endblock %}

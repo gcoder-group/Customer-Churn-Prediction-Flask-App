@@ -1,0 +1,83 @@
+    <!-- Custom JavaScript -->
+    <script>
+      let actualChurn = null;
+
+      async function loadSample(type) {
+        if (!type) return;
+
+        const response = await fetch(`/sample/${type}`);
+        const result = await response.json();
+
+        const sample = result.data;
+        actualChurn = result.actual;
+
+        Object.keys(sample).forEach((key) => {
+          const el = document.getElementById(key);
+
+          if (el) {
+            el.value = sample[key];
+          }
+        });
+
+        // clear the result
+        document.getElementById("actualResult").innerHTML = "";
+        const predictionBox = document.getElementById("predictionBox");
+        predictionBox.innerHTML = "";
+        predictionBox.className = "";
+        const bar = document.getElementById("probabilityBar");
+
+        bar.style.width = 0;
+        bar.innerHTML = "";
+      }
+
+      async function predict() {
+        const formData = {};
+
+        document.querySelectorAll("input,select").forEach((el) => {
+          formData[el.id] = el.value;
+        });
+
+        const response = await fetch("/predict_api", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await response.json();
+
+        const pred = result.prediction;
+        const prob = result.probability;
+        const actual = result.actual;
+
+        const box = document.getElementById("predictionBox");
+
+        if (pred === "Yes") {
+          box.innerHTML = "Prediction: Customer Will Churn";
+          box.className = "result-box churn";
+        } else {
+          box.innerHTML = "Prediction: Customer Will Stay";
+          box.className = "result-box nochurn";
+        }
+
+        const percent = Math.round(prob * 100);
+
+        const bar = document.getElementById("probabilityBar");
+
+        bar.style.width = percent + "%";
+        bar.innerHTML = percent + "%";
+
+        // show actual churn after prediction
+        if (actual !== null) {
+          document.getElementById("actualResult").innerHTML =
+            actual === "Yes"
+              ? "<div class='result-box churn'>Actual: Customer Churned</div>"
+              : "<div class='result-box nochurn'>Actual: Customer Stayed</div>";
+        }
+      }
+    </script>
+    <!-- Bootstrap 5 JS Bundle (required for navbar toggle) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+</html>
+

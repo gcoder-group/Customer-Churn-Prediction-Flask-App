@@ -1,0 +1,308 @@
+{% extends "layout.html" %} {% block title %}Pipeline - Churn Predictor{% endblock %} 
+{% block page_title %}ML Pipeline Overview{% endblock %} 
+
+{% block content %}
+<section class="project-info mb-4">
+  <p>
+    This page provides a comprehensive overview of the Machine Learning pipeline used for 
+    <strong>Customer Churn Prediction</strong>. The pipeline processes raw data 
+    through multiple stages to make predictions.
+  </p>
+</section>
+
+<hr />
+
+<!-- ML Pipeline Flow Diagram -->
+<h5 class="mb-4">ML Pipeline Flow</h5>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="d-flex flex-wrap justify-content-center align-items-center">
+      <div class="text-center p-2">
+        <div class="badge bg-primary p-3">Business Problem</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-secondary p-3">Data Collection</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-info p-3">Data Cleaning</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-warning text-dark p-3">EDA</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-danger p-3">Feature Engineering</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-success p-3">Model Training</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-dark p-3">Model Evaluation</div>
+      </div>
+      <div class="text-muted px-2">↓</div>
+      <div class="text-center p-2">
+        <div class="badge bg-purple p-3">Model Deployment</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- 1. Problem Statement -->
+<h5 class="mb-3">1. Problem Statement</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <p><strong>Customer churn</strong> refers to the percentage of customers who stop using a company's product or service over a period of time.</p>
+    <p class="mb-2">For subscription-based businesses such as telecom companies, customer churn directly impacts:</p>
+    <ul>
+      <li>Revenue</li>
+      <li>Customer lifetime value</li>
+      <li>Business growth</li>
+    </ul>
+    <p class="mb-0"><strong>Goal:</strong> Predict whether a customer is likely to churn, allowing the company to take proactive retention actions.</p>
+  </div>
+</div>
+
+<!-- 2. Dataset Description -->
+<h5 class="mb-3">2. Dataset Description</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <p><strong>Source:</strong> <a href="https://www.kaggle.com/datasets/muhammadshahidazeem/customer-churn-dataset" target="_blank">Telco Customer Churn Dataset</a></p>
+    <table class="table table-bordered mb-0">
+      <tbody>
+        <tr>
+          <td><strong>Total Records</strong></td>
+          <td>7,044</td>
+        </tr>
+        <tr>
+          <td><strong>Input Features</strong></td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td><strong>Target Column</strong></td>
+          <td>Churn</td>
+        </tr>
+        <tr>
+          <td><strong>Data Type</strong></td>
+          <td>Structured Tabular Data</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 3. Understanding Features -->
+<h5 class="mb-3">3. Understanding the Features</h5>
+<div class="row mb-4">
+  <div class="col-md-6 mb-3">
+    <div class="card h-100">
+      <div class="card-header bg-light">Customer Profile</div>
+      <div class="card-body">
+        <ul class="mb-0">
+          <li>Gender</li>
+          <li>SeniorCitizen</li>
+          <li>Partner</li>
+          <li>Dependents</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-3">
+    <div class="card h-100">
+      <div class="card-header bg-light">Service Information</div>
+      <div class="card-body">
+        <ul class="mb-0">
+          <li>InternetService</li>
+          <li>PhoneService</li>
+          <li>StreamingTV</li>
+          <li>OnlineSecurity</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-3">
+    <div class="card h-100">
+      <div class="card-header bg-light">Billing Information</div>
+      <div class="card-body">
+        <ul class="mb-0">
+          <li>MonthlyCharges</li>
+          <li>TotalCharges</li>
+          <li>PaymentMethod</li>
+          <li>Contract Type</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-3">
+    <div class="card h-100">
+      <div class="card-header bg-light">Customer History</div>
+      <div class="card-body">
+        <ul class="mb-0">
+          <li>Tenure (months stayed)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Data Preprocessing -->
+<h5 class="mb-3">4. Data Preprocessing</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <h6>Handling Missing Values</h6>
+    <ul>
+      <li>TotalCharges column had missing values</li>
+      <li>Converted to numeric format</li>
+      <li>Missing values handled using <strong>median imputation</strong></li>
+    </ul>
+    <h6 class="mt-3">Handling Categorical Features</h6>
+    <ul>
+      <li>Many features are categorical (Contract Type, Internet Service, Payment Method, etc.)</li>
+      <li>Converted to numeric using <strong>One Hot Encoding</strong></li>
+      <li>Example: Contract Type → Month-to-month, One Year, Two Year</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 5. Feature Engineering Pipeline -->
+<h5 class="mb-3">5. Feature Engineering Pipeline</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <p>A Scikit-Learn Pipeline was created to automate preprocessing and model training.</p>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card bg-light">
+          <div class="card-body">
+            <h6>Numeric Features Processing</h6>
+            <ul class="mb-0">
+              <li>Missing value imputation (median)</li>
+              <li>Feature scaling (StandardScaler)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card bg-light">
+          <div class="card-body">
+            <h6>Categorical Features Processing</h6>
+            <ul class="mb-0">
+              <li>Missing value imputation (most frequent)</li>
+              <li>One-hot encoding</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h6 class="mt-3">Advantages of using Pipeline:</h6>
+    <ul>
+      <li>Ensures consistent preprocessing</li>
+      <li>Prevents data leakage</li>
+      <li>Simplifies model deployment</li>
+      <li>Allows easy integration with APIs</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 6. Train-Test Split -->
+<h5 class="mb-3">6. Train-Test Split</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <table class="table table-bordered mb-3">
+      <tbody>
+        <tr>
+          <td><strong>Training Data</strong></td>
+          <td>80%</td>
+        </tr>
+        <tr>
+          <td><strong>Testing Data</strong></td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <td><strong>Sampling Method</strong></td>
+          <td>Stratified Sampling</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="mb-0"><strong>Why stratification?</strong> Ensures both sets maintain the same proportion of churn and non-churn customers, preventing biased datasets.</p>
+  </div>
+</div>
+
+<!-- 7. Model Selection -->
+<h5 class="mb-3">7. Model Selection</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <h6><strong>Algorithm:</strong> Logistic Regression</h6>
+    <p>Why Logistic Regression?</p>
+    <ul>
+      <li>Works well with structured data</li>
+      <li>Highly interpretable</li>
+      <li>Computationally efficient</li>
+      <li>Suitable for binary classification problems</li>
+    </ul>
+    <p class="mb-0"><strong>Output:</strong> 0 → Customer will stay, 1 → Customer will churn</p>
+  </div>
+</div>
+
+<!-- 8. Model Deployment -->
+<h5 class="mb-3">8. Model Deployment</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <p>The trained model was deployed using <strong>Flask</strong> with REST APIs:</p>
+    <div class="table-responsive">
+      <table class="table table-bordered mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>API Endpoint</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/predict_api</code></td>
+            <td>Returns churn prediction, probability, and actual result</td>
+          </tr>
+          <tr>
+            <td><code>/sample/<type></code></td>
+            <td>Returns random sample customers for testing</td>
+          </tr>
+          <tr>
+            <td><code>/model_metrics_api</code></td>
+            <td>Returns model performance metrics</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 9. Business Impact -->
+<h5 class="mb-3">9. Business Impact</h5>
+<div class="card mb-4">
+  <div class="card-body">
+    <p>Customer churn prediction enables companies to:</p>
+    <ul class="mb-0">
+      <li>Identify high-risk customers</li>
+      <li>Take proactive retention actions</li>
+      <li>Reduce customer loss</li>
+      <li>Increase revenue and customer lifetime value</li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .bg-purple {
+    background-color: #6f42c1 !important;
+  }
+</style>
+{% endblock %}
+
